@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="PetSociety es...">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@loyhervelasquez">
+    <meta property="twitter:creator" content="@loyhervelasquez">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PetSociety">
+    <meta property="og:title" content="PetSociety - descripción...">
+    <meta property="og:url" content="https://github.com/loyhervelasquez/petsociety">
+    <meta property="og:image" content="https://avatars2.githubusercontent.com/u/29444917?s=460&v=4">
+    <meta property="og:description" content="PetSociety es...">
+    <title>PetSociety - descripción...</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/global.js"></script>
+  </head>
+  <body class="app sidebar-mini rtl">
+    <!-- Navbar-->
+    <header class="app-header" id="header"><a class="app-header__logo" href="index.html">Pet Society</a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="Buscar">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li> -->
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li v-if="!isAuth"><a class="dropdown-item" href="login.html"><i class="fa fa-sign-in fa-lg"></i> Iniciar Sesión</a>
+            <li v-if="isAuth"><a class="dropdown-item" href="logout.html"><i class="fa fa-sign-out fa-lg"></i> Cerrar Sesión</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user" v-if="!isAuth"><img class="app-sidebar__user-avatar" src="img/visitante.jpg" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-designation">Visitante</p>
+          <p class="app-sidebar__user-name">Anónimo</p>
+        </div>
+      </div>
+      <div class="app-sidebar__user" v-if="isAuth"><img class="app-sidebar__user-avatar" src="img/organizacion.png" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-designation">Organización</p>
+          <p class="app-sidebar__user-name">{{nombre_organizacion}}</p>
+        </div>
+      </div>
+      <ul class="app-menu">
+        <li><a class="app-menu__item active" href="index.html"><i class="app-menu__icon fa fa-home"></i><span class="app-menu__label">Inicio</span></a></li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-paw"></i><span class="app-menu__label">Animales</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="buscar-animales.html"><i class="icon fa fa-circle-o"></i> Buscar</a></li>
+            <li v-if="isAuth"><a class="treeview-item" href="registro-animal.html"><i class="icon fa fa-circle-o"></i> Registrar</a></li>
+          </ul>
+        </li>
+        <li v-if="isAuth" class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Dueños</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="buscar-duenos.html"><i class="icon fa fa-circle-o"></i> Buscar</a></li>
+            <li><a class="treeview-item" href="registro-dueno.html"><i class="icon fa fa-circle-o"></i> Registrar</a></li>
+          </ul>
+        </li>
+        <li v-if="isAuth" class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-bank"></i><span class="app-menu__label">Organizaciones</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="buscar-organizaciones.html"><i class="icon fa fa-circle-o"></i> Buscar</a></li>
+          </ul>
+        </li>
+        <!-- <li v-if="isAuth" class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Reportes</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Reporte #1</a></li>
+            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Reporte #2</a></li>
+          </ul>
+        </li> -->
+        <li v-if="!isAuth"><a class="app-menu__item" href="login.html"><i class="app-menu__icon fa fa-sign-in"></i><span class="app-menu__label">Iniciar Sesión</span></a></li>
+        <li v-if="isAuth"><a class="app-menu__item" href="logout.html"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Cerrar Sesión</span></a></li>
+      </ul>
+    </aside>
+    <main class="app-content" id="app">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-users"></i> Registrar Dueño</h1>
+          <p>Breve descripción del registro</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">Dueños</li>
+          <li class="breadcrumb-item active"><a href="#">Registro</a></li>
+        </ul>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-md-6">
+          <div class="tile">
+            <!-- <h3 class="tile-title">Register</h3> -->
+            <div class="tile-body">
+              <form class="form-horizontal">
+                <div class="form-group row">
+                  <label class="control-label col-md-3">Cédula</label>
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" placeholder="Ingrese Cédula" id="cedula">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label col-md-3">Nombre</label>
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" placeholder="Ingrese Nombre" id="nombre">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label col-md-3">Dirección</label>
+                  <div class="col-md-8">
+                    <input class="form-control" type="text" placeholder="Ingrese Dirección" id="direccion">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="tile-footer">
+              <div class="row">
+                <div class="col-md-8 col-md-offset-3">
+                  <button class="btn btn-primary" type="button" onclick="registrar()"><i class="fa fa-fw fa-lg fa-check-circle"></i>Registrar</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="index.html"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+      for(let el of ['header', 'aside']){
+        var header = new Vue({
+          el: el,
+          data: {
+            isAuth: isAuth(),
+            nombre_organizacion: getItem("nombre_organizacion")
+          }
+        });
+      }
+    </script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <script type="text/javascript">
+      function registrar() {
+        $.ajax({
+          type: 'POST', url: 'http://petsociety.herokuapp.com/api/owner',
+          dataType: 'json',
+          data: {
+            "cedula"                : $("#cedula").val(),
+            "nombre"                : $("#nombre").val(),
+            "direccion"             : $("#direccion").val(),
+            "api_token"             : getItem("api_token")
+          },
+        }).done(function(response) {
+          data = response.data;
+          alert("Registro Exitoso");
+          window.location.replace("buscar-duenos.html");
+        }).fail(function(response) {
+          data = response.responseJSON.data;
+          if (response.status==400){
+            for(error of Object.values(data)){
+              alert(error[0]);
+            }
+          }else{
+            console.log(response);
+          }
+        });
+      }
+
+      
+    </script>
+    
+    
+  </body>
+</html>

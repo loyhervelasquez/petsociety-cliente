@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="PetSociety es...">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@loyhervelasquez">
+    <meta property="twitter:creator" content="@loyhervelasquez">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PetSociety">
+    <meta property="og:title" content="PetSociety - descripción...">
+    <meta property="og:url" content="https://github.com/loyhervelasquez/petsociety">
+    <meta property="og:image" content="https://avatars2.githubusercontent.com/u/29444917?s=460&v=4">
+    <meta property="og:description" content="PetSociety es...">
+    <title>PetSociety - descripción...</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/global.js"></script>
+  </head>
+  <body class="app sidebar-mini rtl">
+    <!-- Navbar-->
+    <header class="app-header" id="header"><a class="app-header__logo" href="index.html">Pet Society</a>
+      <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+      <!-- Navbar Right Menu-->
+      <ul class="app-nav">
+        <!-- <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="Buscar">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li> -->
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
+          <ul class="dropdown-menu settings-menu dropdown-menu-right">
+            <li v-if="!isAuth"><a class="dropdown-item" href="login.html"><i class="fa fa-sign-in fa-lg"></i> Iniciar Sesión</a>
+            <li v-if="isAuth"><a class="dropdown-item" href="logout.html"><i class="fa fa-sign-out fa-lg"></i> Cerrar Sesión</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <!-- Sidebar menu-->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <aside class="app-sidebar">
+      <div class="app-sidebar__user" v-if="!isAuth"><img class="app-sidebar__user-avatar" src="img/visitante.jpg" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-designation">Visitante</p>
+          <p class="app-sidebar__user-name">Anónimo</p>
+        </div>
+      </div>
+      <div class="app-sidebar__user" v-if="isAuth"><img class="app-sidebar__user-avatar" src="img/organizacion.png" alt="User Image">
+        <div>
+          <p class="app-sidebar__user-designation">Organización</p>
+          <p class="app-sidebar__user-name">{{nombre_organizacion}}</p>
+        </div>
+      </div>
+      <ul class="app-menu">
+        <li><a class="app-menu__item active" href="index.html"><i class="app-menu__icon fa fa-home"></i><span class="app-menu__label">Inicio</span></a></li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-paw"></i><span class="app-menu__label">Animales</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="buscar-animales.html"><i class="icon fa fa-circle-o"></i> Buscar</a></li>
+            <li v-if="isAuth"><a class="treeview-item" href="registro-animal.html"><i class="icon fa fa-circle-o"></i> Registrar</a></li>
+          </ul>
+        </li>
+        <li v-if="isAuth" class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Dueños</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="buscar-duenos.html"><i class="icon fa fa-circle-o"></i> Buscar</a></li>
+            <li><a class="treeview-item" href="registro-dueno.html"><i class="icon fa fa-circle-o"></i> Registrar</a></li>
+          </ul>
+        </li>
+        <li v-if="isAuth" class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-bank"></i><span class="app-menu__label">Organizaciones</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="buscar-organizaciones.html"><i class="icon fa fa-circle-o"></i> Buscar</a></li>
+          </ul>
+        </li>
+        <!-- <li v-if="isAuth" class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Reportes</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Reporte #1</a></li>
+            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Reporte #2</a></li>
+          </ul>
+        </li> -->
+        <li v-if="!isAuth"><a class="app-menu__item" href="login.html"><i class="app-menu__icon fa fa-sign-in"></i><span class="app-menu__label">Iniciar Sesión</span></a></li>
+        <li v-if="isAuth"><a class="app-menu__item" href="logout.html"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Cerrar Sesión</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="app-content" id="app">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-paw"></i> Animales</h1>
+          <p>Breve descripción de animales</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">Animales</li>
+          <li class="breadcrumb-item active"><a href="#">Buscar</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="tile-body">
+              <table class="table table-hover table-bordered" id="tblAnimales">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Status</th>
+                    <th>Dueño</th>
+                    <th class="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(animal, index) in animales">
+                    <td>{{animal.id}}</td>
+                    <td>{{animal.tipo}}</td>
+                    <td>{{animal.nombre}}</td>
+                    <td>{{2018 - animal.anio_nacimiento}} Años</td>
+                    <td>{{animal.estatus}}</td>
+                    <td><a href="#" @click="mostrarModalDueno(animal.owner)">{{animal.owner.nombre}}</a></td>
+                    <td class="text-center" style="width: 120px;">
+                      <button title="Detalles" @click="mostrarModalDetalle(animal)" class="btn btn-sm btn-warning"><i class="fa fa-info-circle"></i></button> 
+                      <button v-if="isAuth" title="Editar" @click="mostrarModalEditar(animal, index)" class="btn btn-sm btn-info"><i class="fa fa-pencil-square-o"></i></button> 
+                      <button v-if="isAuth" title="Eliminar" @click="eliminar(animal.id, index)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Modal Detalle-->
+    <div class="modal fade bd-example-modal-lg" id="mdlDetalle" tabindex="-1" role="dialog" aria-labelledby="mdlDetalleLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mdlDetalleLabel">Detalles del Animal</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-hover table-bordered" >
+              <tbody>
+                <tr>
+                  <th>Código</th>
+                  <td id="dt-id-animal"></td>
+                </tr>
+                <tr>
+                  <th>Tipo</th>
+                  <td id="dt-tipo"></td>
+                </tr>
+                <tr>
+                  <th>Nombre</th>
+                  <td id="dt-nombre"></td>
+                </tr>
+                <tr>
+                  <th>Edad</th>
+                  <td id="dt-edad"></td>
+                </tr>
+                <tr>
+                  <th>Status</th>
+                  <td id="dt-status"></td>
+                </tr>
+                <tr>
+                  <th>Vacunas</th>
+                  <td id="dt-vacunas"></td>
+                </tr>
+                <tr>
+                  <th>Procedencia</th>
+                  <td id="dt-procedencia"></td>
+                </tr>
+                <tr>
+                  <th>Descripción</th>
+                  <td id="dt-descripcion"></td>
+                </tr>
+                <tr>
+                  <th>Cédula del Dueño</th>
+                  <td id="dt-cedula-dueno"></td>
+                </tr>
+                <tr>
+                  <th>Nombre del Dueño</th>
+                  <td id="dt-nombre-dueno"></td>
+                </tr>
+                <tr>
+                  <th>Dirección del Dueño</th>
+                  <td id="dt-direccion-dueno"></td>
+                </tr>
+                <tr>
+                  <th>Registrado por</th>
+                  <td id="dt-registrado-por"></td>
+                </tr>
+                <tr>
+                  <th>Fecha de Registro:</th>
+                  <td id="dt-fecha-registro"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Dueno-->
+    <div class="modal fade" id="mdlDueno" tabindex="-1" role="dialog" aria-labelledby="mdlDuenoLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mdlDuenoLabel">Datos del Dueño</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group row">
+                <label class="control-label col-md-3">Cédula</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Cédula" id="cedula" readonly="readonly">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Nombre</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Nombre" id="nombre" readonly="readonly">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Dirección</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Dirección" id="direccion" readonly="readonly">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Editar-->
+    <div class="modal fade" id="mdlEditar" tabindex="-1" role="dialog" aria-labelledby="mdlEditarLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mdlEditarLabel">Editar Animal: </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group row">
+                <label class="control-label col-md-3">Tipo</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Tipo" id="tipo">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Nombre</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Nombre" id="nombre-animal">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Año de Nacimiento</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese el Año de Nacimiento" id="anio_nacimiento">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Status</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Status" id="status-animal">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Vacunas</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Vacunas" id="vacunas">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Procedencia</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Procedencia" id="procedencia">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Descripción</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Descripción" id="descripcion">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="control-label col-md-3">Cédula Dueño</label>
+                <div class="col-md-8">
+                  <input class="form-control" type="text" placeholder="Ingrese Cédula del Dueño" id="cedula-dueno-animal">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" @click="editar()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+      var animales = [];
+      $.ajax({
+        type: 'GET', url: 'http://petsociety.herokuapp.com/api/animal',
+        dataType: 'json',
+        async: false
+      }).done(function(response) {
+        animales = response.data;
+        console.log(animales);
+      }).fail(function(response) {
+          console.log(response);
+          alert("Error");
+          window.location.replace("index.html");
+      });
+    </script>
+    <script type="text/javascript">
+      for(let el of ['header', 'aside']){
+        var elems = new Vue({
+          el: el,
+          data: {
+            isAuth: isAuth(),
+            nombre_organizacion: getItem("nombre_organizacion"),
+          }
+        });
+      }
+    </script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <!-- Data table plugin-->
+    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+      var tblAnimales = new Vue({
+        el: '#tblAnimales',
+        data: {
+          animales: animales,
+          animal_id: '',
+          animal_index: '',
+          isAuth: isAuth(),
+        },
+        methods: {
+          eliminar: function (id, index) {
+            $.ajax({
+              type: 'DELETE', url: 'http://petsociety.herokuapp.com/api/animal/'+id,
+              dataType: 'json',
+              data: { 
+                api_token: getItem("api_token"),
+              },
+            }).done(function(response) {
+              console.log(response);
+              tblAnimales.animales.splice(index, 1);
+            }).fail(function(response) {
+                console.log(response);
+            });
+          },
+          mostrarModalEditar: function (animal, index) {
+            dueno = animal.owner;
+            $("#mdlEditarLabel").text("Editar Animal: " + animal.id);
+            $("#tipo").val(animal.tipo);
+            $("#nombre-animal").val(animal.nombre);
+            $("#anio_nacimiento").val(animal.anio_nacimiento);
+            $("#status-animal").val(animal.estatus);
+            $("#vacunas").val(animal.vacunas);
+            $("#procedencia").val(animal.procedencia);
+            $("#descripcion").val(animal.descripcion);
+            $("#cedula-dueno-animal").val(dueno.cedula);
+            this.animal_id = animal.id;
+            this.animal_index = index;
+            $('#mdlEditar').modal('toggle');
+          },
+          mostrarModalDueno: function (dueno) {
+            $("#cedula").val(dueno.cedula);
+            $("#nombre").val(dueno.nombre);
+            $("#direccion").val(dueno.direccion);
+            $('#mdlDueno').modal('toggle');
+          },
+          mostrarModalDetalle: function (animal) {
+            dueno = animal.owner;
+            organizacion = animal.organization;
+            $("#dt-id-animal").text(animal.id);
+            $("#dt-tipo").text(animal.tipo);
+            $("#dt-nombre").text(animal.nombre);
+            $("#dt-edad").text(2018 - animal.anio_nacimiento);
+            $("#dt-status").text(animal.estatus);
+            $("#dt-vacunas").text(animal.vacunas);
+            $("#dt-procedencia").text(animal.procedencia);
+            $("#dt-descripcion").text(animal.descripcion);
+            $("#dt-fecha-registro").text(animal.created_at);
+            $("#dt-cedula-dueno").text(dueno.cedula);
+            $("#dt-nombre-dueno").text(dueno.nombre);
+            $("#dt-direccion-dueno").text(dueno.direccion);
+            $("#dt-registrado-por").text(organizacion.nombre);
+            $('#mdlDetalle').modal('toggle');
+          }
+        }
+      });
+
+      var modalEditar = new Vue({
+        el: '#mdlEditar',
+        data: {
+        },
+        methods: {
+          editar: function () {
+            $.ajax({
+              type: 'PUT', url: 'http://petsociety.herokuapp.com/api/animal/'+tblAnimales.animal_id,
+              dataType: 'json',
+              data: {
+                tipo: $("#tipo").val(),
+                nombre: $("#nombre-animal").val(),
+                cedula: $("#cedula-dueno-animal").val(),
+                anio_nacimiento: $("#anio_nacimiento").val(),
+                estatus: $("#status-animal").val(),
+                vacunas: $("#vacunas").val(),
+                procedencia: $("#procedencia").val(),
+                descripcion: $("#descripcion").val(),
+                api_token: getItem("api_token"),
+              },
+            }).done(function(response) {
+              console.log(response);
+              data = response.data;
+              tblAnimales.animales[tblAnimales.animal_index].tipo = data.tipo;
+              tblAnimales.animales[tblAnimales.animal_index].nombre = data.nombre;
+              tblAnimales.animales[tblAnimales.animal_index].anio_nacimiento = data.anio_nacimiento;
+              tblAnimales.animales[tblAnimales.animal_index].estatus = data.estatus;
+              tblAnimales.animales[tblAnimales.animal_index].vacunas = data.vacunas;
+              tblAnimales.animales[tblAnimales.animal_index].procedencia = data.procedencia;
+              tblAnimales.animales[tblAnimales.animal_index].descripcion = data.descripcion;
+              tblAnimales.animales[tblAnimales.animal_index].owner = data.owner;
+              $('#mdlEditar').modal('toggle');
+            }).fail(function(response) {
+              data = response.responseJSON.data;
+              if (response.status==400){
+                for(error of Object.values(data)){
+                  alert(error[0]);
+                }
+              }else{
+                console.log(response);
+              }
+            });
+          }
+        }
+      });
+
+      $('#tblAnimales').DataTable({
+        language: {
+          url: 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json'
+        }
+      });
+
+    </script>
+    
+  </body>
+</html>

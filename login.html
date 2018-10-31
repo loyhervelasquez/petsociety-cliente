@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Login - PetSociety</title>
+    <script src="js/global.js"></script>
+  </head>
+  <body>
+    <section class="material-half-bg">
+      <div class="cover"></div>
+    </section>
+    <section class="login-content">
+      <div class="logo">
+        <h1>Pet Society</h1>
+      </div>
+      <div class="login-box">
+        <form class="login-form" action="index.html">
+          <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>Iniciar Sesión</h3>
+          <div class="form-group">
+            <label class="control-label">Rif o Email</label>
+            <input class="form-control" type="text" placeholder="Rif o Email" autofocus id="username">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Password</label>
+            <input class="form-control" type="password" placeholder="Password" id="password">
+          </div>
+          <div class="form-group">
+            <div class="utility">
+              <p class="semibold-text mb-2"><a href="index.html">Volver al Inicio</a></p>
+              <p class="semibold-text mb-2"><a href="registro-organizacion.html">Registrar Organización</a></p>
+            </div>
+          </div>
+          <div class="form-group btn-container">
+            <button class="btn btn-primary btn-block" id="btnIniciarSesion"><i class="fa fa-sign-in fa-lg fa-fw"></i>INICIAR SESIÓN</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- Essential javascripts for application to work-->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="js/plugins/pace.min.js"></script>
+    <script type="text/javascript">
+      // Login Page Flipbox control
+      $('.login-content [data-toggle="flip"]').click(function() {
+      	$('.login-box').toggleClass('flipped');
+      	return false;
+      });
+
+      $('#btnIniciarSesion').click(function( event ) {
+        event.preventDefault();
+        $.ajax({
+          type: 'POST', url: 'http://petsociety.herokuapp.com/api/organization/login',
+          dataType: 'json',
+          data: { 
+            username: $("#username").val(),
+            password: $("#password").val()
+          },
+        }).done(function(response) {
+          data = response.data;
+          setItem("api_token", data.api_token);
+          setItem("nombre_organizacion", data.nombre);
+          window.location.replace("index.html");
+        }).fail(function(response) {
+          if (response.status==403 || response.status==400){
+            msj = "Credenciales Inválidas"
+            alert(msj);
+          }else{
+            console.log(response);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
